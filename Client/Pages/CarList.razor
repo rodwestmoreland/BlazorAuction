@@ -1,0 +1,45 @@
+﻿@page "/car"
+@inherits CarListBase
+
+<div class="container">
+
+    @foreach (var car in Vehicles)
+    {
+        <hr />
+        <div class="row">
+
+            <div class="col col-md-3">
+                <img src="@car.VehicleImagePath" class="img-fluid" style="max-width: 200px;" />
+            </div>
+
+            <div class="col col-md-5">
+
+                <div class="row">
+                    <div class="col mini-box colorred">Year: @car.Year   </div>
+                </div>
+                <div class="row">
+                    <div class="col mini-box">Make: @car.Make   </div>
+                </div>
+                <div class="row">
+                    <div class="col mini-box">Model: @car.Model  </div>
+                </div>
+            </div>
+
+
+            <div class="col col-md-4">
+
+                <div class="row">
+                    <div class="col mini-box"><p>Current Bid: <strong>$700.00</strong> </p></div>
+                </div>
+                <div class="row">
+                    <div class="col mini-box"><p>Ends: 4/03 9:00pm </p></div>
+                </div>
+                <div class="row">
+                    <div class="col mini-box"><button class="btn btn-success">Bid Now</button><br /><br /> </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+    }
+
+</div>

@@ -1,0 +1,62 @@
+﻿@page "/vehicle/{id}"
+<h3>Details: @Vehicle.Year @Vehicle.Make @Vehicle.Model</h3>
+
+
+<hr />
+
+<div class="container">
+    <div class="row">
+
+        <div class="col col-md-4">
+            <img src="@Vehicle.VehicleImagePath" class="img-fluid" style="max-width: 200px;" />
+        </div>
+
+        <div class="col col-md-8">
+
+            <div class="row">
+                <div class="col mini-box colorred">Year: @Vehicle.Year   </div>
+            </div>
+            <div class="row">
+                <div class="col mini-box">Make: @Vehicle.Make   </div>
+            </div>
+            <div class="row">
+                <div class="col mini-box">Model: @Vehicle.Model  </div>
+            </div>
+        </div>
+
+
+    </div>
+    <hr />
+    <EditForm Model="@Vehicle" OnValidSubmit="HandleValidSubmit">
+
+        <div class="row">
+
+            <div class="btn-group">
+                <a href="/editvehicle/@Vehicle.VehicleId" class="btn btn-primary mr-2">Edit</a>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+
+
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    
+    [Inject]
+    public IVehicleService VehicleService { get; set; }
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+    [Parameter]
+    public string Id { get; set; }
+
+    public Vehicle Vehicle { get; set; } = new Vehicle();
+
+    protected async override Task OnInitializedAsync() => Vehicle = await VehicleService.GetVehicle(int.Parse(Id));
+
+    protected async Task HandleValidSubmit()
+    {
+        await VehicleService.DeleteVehicle(Vehicle.VehicleId);
+        NavigationManager.NavigateTo("/");
+    }
+}

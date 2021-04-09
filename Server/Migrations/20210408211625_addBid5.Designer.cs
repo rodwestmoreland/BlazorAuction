@@ -4,14 +4,16 @@ using BlazorAuction.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorAuction.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210408211625_addBid5")]
+    partial class addBid5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,21 +40,13 @@ namespace BlazorAuction.Server.Migrations
                     b.Property<DateTimeOffset>("BidStartDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTimeOffset>("BidTimeCreated")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<int>("BidderId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("HighBid")
                         .HasColumnType("decimal(16,2)");
 
-                    b.Property<int?>("VehicleId")
-                        .HasColumnType("int");
-
                     b.HasKey("BidId");
-
-                    b.HasIndex("VehicleId");
 
                     b.ToTable("Bids");
                 });
@@ -444,13 +438,6 @@ namespace BlazorAuction.Server.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("B.Models.Bid", b =>
-                {
-                    b.HasOne("B.Models.Vehicle", null)
-                        .WithMany("BidList")
-                        .HasForeignKey("VehicleId");
-                });
-
             modelBuilder.Entity("B.Models.Vehicle", b =>
                 {
                     b.HasOne("B.Models.Bid", "Bid")
@@ -520,11 +507,6 @@ namespace BlazorAuction.Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("B.Models.Vehicle", b =>
-                {
-                    b.Navigation("BidList");
                 });
 #pragma warning restore 612, 618
         }

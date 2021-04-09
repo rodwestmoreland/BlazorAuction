@@ -17,7 +17,11 @@ namespace BlazorAuction.Server.Models
         
         public async Task<Vehicle> CreateVehicle(Vehicle vehicle)
         {
+            //var newItem = _context.Vehicles.Include(x => x.Bid);
             var newItem = await _context.Vehicles.AddAsync(vehicle);
+            // _context.Vehicles.Add(newItem);
+            //.AddAsync(vehicle);
+
             await _context.SaveChangesAsync();
             return newItem.Entity;
         }

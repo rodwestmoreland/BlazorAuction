@@ -22,7 +22,7 @@ namespace B.Models
         public int BidId { get; set; }
         public DateTimeOffset BidStartDate { get; set; }
         public DateTimeOffset BidEndDate { get; set; }
-
+        public DateTimeOffset BidTimeCreated { get; set; } = DateTimeOffset.Now; // Time when vehicle was bidded on
         [Column(TypeName ="decimal(16,2)")]
         public decimal BidStartAmount { get; set; }
         [Column(TypeName = "decimal(16,2)")]

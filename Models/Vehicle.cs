@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace B.Models
 {
@@ -39,12 +40,12 @@ namespace B.Models
         public int Cylinders { get; set; }
         // Titles: clean, salvage, bonded, lemon, rebuilt, dismantled, flood, odo rollback  
         public string TitleType { get; set; }
-        public string VehicleImagePath { get; set; }
+        public string VehicleImagePath { get; set; } = "https://loremflickr.com/480/320/vehicle";
         
         public string WinnerId { get; set; }
         
-        //public virtual Bid Bid { get; set; }
-
+        public List<Bid> BidList { get; set; }
+        public virtual Bid Bid { get; set; } 
 
         //[ForeignKey(nameof(ApplicationUser))]
         public string BidderId { get; set; }

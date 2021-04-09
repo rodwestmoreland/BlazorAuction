@@ -2,22 +2,10 @@
 
 namespace BlazorAuction.Server.Migrations
 {
-    public partial class addBid : Migration
+    public partial class addBid5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Bids_Vehicles_VehicleId",
-                table: "Bids");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Bids_VehicleId",
-                table: "Bids");
-
-            migrationBuilder.DropColumn(
-                name: "VehicleId",
-                table: "Bids");
-
             migrationBuilder.AddColumn<int>(
                 name: "BidId",
                 table: "Vehicles",
@@ -51,26 +39,6 @@ namespace BlazorAuction.Server.Migrations
             migrationBuilder.DropColumn(
                 name: "BidId",
                 table: "Vehicles");
-
-            migrationBuilder.AddColumn<int>(
-                name: "VehicleId",
-                table: "Bids",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bids_VehicleId",
-                table: "Bids",
-                column: "VehicleId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Bids_Vehicles_VehicleId",
-                table: "Bids",
-                column: "VehicleId",
-                principalTable: "Vehicles",
-                principalColumn: "VehicleId",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

@@ -3,6 +3,7 @@ using BlazorAuction.Server.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Dynamic;
 using System.Threading.Tasks;
 
 namespace BlazorAuction.Server.Controllers
@@ -19,6 +20,7 @@ namespace BlazorAuction.Server.Controllers
         {
             try
             {
+                
                 return Ok(await _vehicle_Repo.GetVehicles());
             }
             catch (Exception e)
@@ -33,6 +35,7 @@ namespace BlazorAuction.Server.Controllers
             try
             {
                 var result = await _vehicle_Repo.GetVehicle(id);
+                
 
                 if (result == null)
                 {

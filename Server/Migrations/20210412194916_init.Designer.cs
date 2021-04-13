@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorAuction.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210402190121_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210412194916_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,16 +28,7 @@ namespace BlazorAuction.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("BidEndAmount")
-                        .HasColumnType("decimal(16,2)");
-
-                    b.Property<DateTimeOffset>("BidEndDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("BidStartAmount")
-                        .HasColumnType("decimal(16,2)");
-
-                    b.Property<DateTimeOffset>("BidStartDate")
+                    b.Property<DateTimeOffset>("BidTimeCreated")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<int>("BidderId")
@@ -46,7 +37,10 @@ namespace BlazorAuction.Server.Migrations
                     b.Property<decimal>("HighBid")
                         .HasColumnType("decimal(16,2)");
 
-                    b.Property<int>("VehicleId")
+                    b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("myCount")
                         .HasColumnType("int");
 
                     b.HasKey("BidId");
@@ -62,6 +56,18 @@ namespace BlazorAuction.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("BidEndAmount")
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<DateTimeOffset?>("BidEndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("BidId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("BidStartDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("BidderId")
                         .HasColumnType("nvarchar(max)");
@@ -95,6 +101,9 @@ namespace BlazorAuction.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("StartAmount")
+                        .HasColumnType("decimal(16,2)");
+
                     b.Property<string>("TitleType")
                         .HasColumnType("nvarchar(max)");
 
@@ -107,7 +116,12 @@ namespace BlazorAuction.Server.Migrations
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
+                    b.Property<int>("myCount")
+                        .HasColumnType("int");
+
                     b.HasKey("VehicleId");
+
+                    b.HasIndex("BidId");
 
                     b.ToTable("Vehicles");
                 });
@@ -140,11 +154,6 @@ namespace BlazorAuction.Server.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -157,7 +166,6 @@ namespace BlazorAuction.Server.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -168,7 +176,6 @@ namespace BlazorAuction.Server.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -198,27 +205,12 @@ namespace BlazorAuction.Server.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
-
-                    b.Property<string>("StreetAddress")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("zip")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
 
                     b.HasKey("Id");
 
@@ -475,11 +467,18 @@ namespace BlazorAuction.Server.Migrations
                 {
                     b.HasOne("B.Models.Vehicle", "Vehicle")
                         .WithMany()
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VehicleId");
 
                     b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("B.Models.Vehicle", b =>
+                {
+                    b.HasOne("B.Models.Bid", "Bid")
+                        .WithMany()
+                        .HasForeignKey("BidId");
+
+                    b.Navigation("Bid");
                 });
 
             modelBuilder.Entity("B.Models.Watch", b =>

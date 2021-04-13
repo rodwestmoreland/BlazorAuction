@@ -19,8 +19,5 @@ namespace BlazorAuction.Client.Services
         public async Task CreateVehicle(Vehicle newVehicle) =>      await httpClient.PostAsJsonAsync<Vehicle>("api/vehicle", newVehicle);
         public async Task UpdateVehicle(Vehicle editVehicle) =>     await httpClient.PutAsJsonAsync("api/vehicle", editVehicle );
         public async Task DeleteVehicle(int id) =>                  await httpClient.DeleteAsync($"api/vehicle/{id}");
-        
     }         
-
-    
 }

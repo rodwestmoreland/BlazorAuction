@@ -23,9 +23,9 @@ namespace BlazorAuction.Server
                                                         options.UseSqlServer(
                                                                 Configuration.GetConnectionString("DBConnection")
                                                         ));
-            //services.AddControllers(); // is this needed?
-
+            
             services.AddScoped<IVehicle_Repo, Vehicle_Repo>();  // <- this is definitely required
+            services.AddScoped<IBid_Repo, Bid_Repo>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

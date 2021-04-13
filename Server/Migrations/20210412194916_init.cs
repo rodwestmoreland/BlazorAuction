@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BlazorAuction.Server.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,12 +27,8 @@ namespace BlazorAuction.Server.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StreetAddress = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    State = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
-                    zip = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -91,32 +87,6 @@ namespace BlazorAuction.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Vehicles",
-                columns: table => new
-                {
-                    VehicleId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    Make = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Mileage = table.Column<int>(type: "int", nullable: false),
-                    Condition = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Damage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DriveTrain = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FuelType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Cylinders = table.Column<int>(type: "int", nullable: false),
-                    TitleType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VehicleImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WinnerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BidderId = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Vehicles", x => x.VehicleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -226,18 +196,48 @@ namespace BlazorAuction.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Vehicles",
+                columns: table => new
+                {
+                    VehicleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    Make = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mileage = table.Column<int>(type: "int", nullable: false),
+                    StartAmount = table.Column<decimal>(type: "decimal(16,2)", nullable: false),
+                    BidStartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    BidEndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    BidEndAmount = table.Column<decimal>(type: "decimal(16,2)", nullable: false),
+                    Condition = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Damage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DriveTrain = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FuelType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cylinders = table.Column<int>(type: "int", nullable: false),
+                    TitleType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VehicleImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WinnerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BidId = table.Column<int>(type: "int", nullable: true),
+                    myCount = table.Column<int>(type: "int", nullable: false),
+                    BidderId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vehicles", x => x.VehicleId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Bids",
                 columns: table => new
                 {
                     BidId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BidStartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    BidEndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    BidStartAmount = table.Column<decimal>(type: "decimal(16,2)", nullable: false),
-                    BidEndAmount = table.Column<decimal>(type: "decimal(16,2)", nullable: false),
+                    BidTimeCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     HighBid = table.Column<decimal>(type: "decimal(16,2)", nullable: false),
-                    BidderId = table.Column<int>(type: "int", nullable: false),
-                    VehicleId = table.Column<int>(type: "int", nullable: false)
+                    VehicleId = table.Column<int>(type: "int", nullable: true),
+                    myCount = table.Column<int>(type: "int", nullable: false),
+                    BidderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -247,7 +247,7 @@ namespace BlazorAuction.Server.Migrations
                         column: x => x.VehicleId,
                         principalTable: "Vehicles",
                         principalColumn: "VehicleId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -341,13 +341,30 @@ namespace BlazorAuction.Server.Migrations
                 columns: new[] { "SubjectId", "SessionId", "Type" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_BidId",
+                table: "Vehicles",
+                column: "BidId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Watches_VehicleId",
                 table: "Watches",
                 column: "VehicleId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Vehicles_Bids_BidId",
+                table: "Vehicles",
+                column: "BidId",
+                principalTable: "Bids",
+                principalColumn: "BidId",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Bids_Vehicles_VehicleId",
+                table: "Bids");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -362,9 +379,6 @@ namespace BlazorAuction.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Bids");
 
             migrationBuilder.DropTable(
                 name: "DeviceCodes");
@@ -383,6 +397,9 @@ namespace BlazorAuction.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Vehicles");
+
+            migrationBuilder.DropTable(
+                name: "Bids");
         }
     }
 }

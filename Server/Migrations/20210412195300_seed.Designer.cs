@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorAuction.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210408203624_addBid")]
-    partial class addBid
+    [Migration("20210412195300_seed")]
+    partial class seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,16 +28,7 @@ namespace BlazorAuction.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("BidEndAmount")
-                        .HasColumnType("decimal(16,2)");
-
-                    b.Property<DateTimeOffset>("BidEndDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("BidStartAmount")
-                        .HasColumnType("decimal(16,2)");
-
-                    b.Property<DateTimeOffset>("BidStartDate")
+                    b.Property<DateTimeOffset>("BidTimeCreated")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<int>("BidderId")
@@ -46,9 +37,73 @@ namespace BlazorAuction.Server.Migrations
                     b.Property<decimal>("HighBid")
                         .HasColumnType("decimal(16,2)");
 
+                    b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("myCount")
+                        .HasColumnType("int");
+
                     b.HasKey("BidId");
 
+                    b.HasIndex("VehicleId");
+
                     b.ToTable("Bids");
+
+                    b.HasData(
+                        new
+                        {
+                            BidId = 1,
+                            BidTimeCreated = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 777, DateTimeKind.Unspecified).AddTicks(1123), new TimeSpan(0, -4, 0, 0, 0)),
+                            BidderId = 0,
+                            HighBid = 1200m,
+                            VehicleId = 1,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            BidId = 2,
+                            BidTimeCreated = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 780, DateTimeKind.Unspecified).AddTicks(4013), new TimeSpan(0, -4, 0, 0, 0)),
+                            BidderId = 0,
+                            HighBid = 1500m,
+                            VehicleId = 1,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            BidId = 3,
+                            BidTimeCreated = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 780, DateTimeKind.Unspecified).AddTicks(4066), new TimeSpan(0, -4, 0, 0, 0)),
+                            BidderId = 0,
+                            HighBid = 2300m,
+                            VehicleId = 2,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            BidId = 4,
+                            BidTimeCreated = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 780, DateTimeKind.Unspecified).AddTicks(4074), new TimeSpan(0, -4, 0, 0, 0)),
+                            BidderId = 0,
+                            HighBid = 500m,
+                            VehicleId = 3,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            BidId = 5,
+                            BidTimeCreated = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 780, DateTimeKind.Unspecified).AddTicks(4079), new TimeSpan(0, -4, 0, 0, 0)),
+                            BidderId = 0,
+                            HighBid = 5000m,
+                            VehicleId = 4,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            BidId = 6,
+                            BidTimeCreated = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 780, DateTimeKind.Unspecified).AddTicks(4084), new TimeSpan(0, -4, 0, 0, 0)),
+                            BidderId = 0,
+                            HighBid = 1600m,
+                            VehicleId = 1,
+                            myCount = 0
+                        });
                 });
 
             modelBuilder.Entity("B.Models.Vehicle", b =>
@@ -58,8 +113,17 @@ namespace BlazorAuction.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("BidEndAmount")
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<DateTimeOffset?>("BidEndDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<int?>("BidId")
                         .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("BidStartDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("BidderId")
                         .HasColumnType("nvarchar(max)");
@@ -93,6 +157,9 @@ namespace BlazorAuction.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("StartAmount")
+                        .HasColumnType("decimal(16,2)");
+
                     b.Property<string>("TitleType")
                         .HasColumnType("nvarchar(max)");
 
@@ -105,11 +172,112 @@ namespace BlazorAuction.Server.Migrations
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
+                    b.Property<int>("myCount")
+                        .HasColumnType("int");
+
                     b.HasKey("VehicleId");
 
                     b.HasIndex("BidId");
 
                     b.ToTable("Vehicles");
+
+                    b.HasData(
+                        new
+                        {
+                            VehicleId = 1,
+                            BidEndAmount = 0.0m,
+                            BidStartDate = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 782, DateTimeKind.Unspecified).AddTicks(6992), new TimeSpan(0, -4, 0, 0, 0)),
+                            Color = "Black",
+                            Cylinders = 8,
+                            Make = "Pontiac",
+                            Mileage = 82000,
+                            Model = "Firebird",
+                            StartAmount = 850m,
+                            TitleType = "Clean",
+                            VehicleImagePath = "img/1968Firebird.jpg",
+                            Year = 1968,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            VehicleId = 2,
+                            BidEndAmount = 0.0m,
+                            BidStartDate = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 782, DateTimeKind.Unspecified).AddTicks(8249), new TimeSpan(0, -4, 0, 0, 0)),
+                            Color = "White",
+                            Cylinders = 8,
+                            Make = "Ford",
+                            Mileage = 150000,
+                            Model = "F150",
+                            StartAmount = 1150m,
+                            TitleType = "Clean",
+                            VehicleImagePath = "img/1998F150.jpg",
+                            Year = 1998,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            VehicleId = 3,
+                            BidEndAmount = 0.0m,
+                            BidStartDate = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 782, DateTimeKind.Unspecified).AddTicks(8273), new TimeSpan(0, -4, 0, 0, 0)),
+                            Color = "Blue",
+                            Cylinders = 6,
+                            Make = "Ford",
+                            Mileage = 23000,
+                            Model = "Ranger",
+                            StartAmount = 250m,
+                            TitleType = "Flood",
+                            VehicleImagePath = "img/1998Ranger.jpg",
+                            Year = 1998,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            VehicleId = 4,
+                            BidEndAmount = 0.0m,
+                            BidStartDate = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 782, DateTimeKind.Unspecified).AddTicks(8280), new TimeSpan(0, -4, 0, 0, 0)),
+                            Color = "Black",
+                            Cylinders = 6,
+                            Make = "BMW",
+                            Mileage = 102000,
+                            Model = "i530",
+                            StartAmount = 4050m,
+                            TitleType = "Rebuilt",
+                            VehicleImagePath = "img/2006i530.jpg",
+                            Year = 2006,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            VehicleId = 5,
+                            BidEndAmount = 0.0m,
+                            BidStartDate = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 782, DateTimeKind.Unspecified).AddTicks(8286), new TimeSpan(0, -4, 0, 0, 0)),
+                            Color = "Silver",
+                            Cylinders = 4,
+                            Make = "Chevy",
+                            Mileage = 10000,
+                            Model = "Volt",
+                            StartAmount = 450m,
+                            TitleType = "Salvage",
+                            VehicleImagePath = "img/2010Volt.jpg",
+                            Year = 2010,
+                            myCount = 0
+                        },
+                        new
+                        {
+                            VehicleId = 6,
+                            BidEndAmount = 0.0m,
+                            BidStartDate = new DateTimeOffset(new DateTime(2021, 4, 12, 15, 52, 59, 782, DateTimeKind.Unspecified).AddTicks(8292), new TimeSpan(0, -4, 0, 0, 0)),
+                            Color = "Black",
+                            Cylinders = 4,
+                            Make = "Volvo",
+                            Mileage = 23000,
+                            Model = "S60",
+                            StartAmount = 13850m,
+                            TitleType = "Clean",
+                            VehicleImagePath = "img/2019S60.jpg",
+                            Year = 2019,
+                            myCount = 0
+                        });
                 });
 
             modelBuilder.Entity("B.Models.Watch", b =>
@@ -151,8 +319,19 @@ namespace BlazorAuction.Server.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -436,6 +615,15 @@ namespace BlazorAuction.Server.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("B.Models.Bid", b =>
+                {
+                    b.HasOne("B.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId");
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("B.Models.Vehicle", b =>

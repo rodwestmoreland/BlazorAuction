@@ -5,18 +5,18 @@ namespace BlazorAuction.Server.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        //public string FullName
-        //{
-        //    get { return _fullName; }
-        //    set { _fullName = LastName + ", " + FirstName; }
-        //}
-        //private string _fullName;
+        public string FullName
+        {
+            get { return _fullName; }
+            set { _fullName = LastName + ", " + FirstName; }
+        }
+        private string _fullName;
         //[Required]
-        //[MaxLength(50), MinLength(1)]
-        //public string FirstName { get; set; }
+        [MaxLength(50), MinLength(1)]
+        public string FirstName { get; set; }
         //[Required]
-        //[MaxLength(50), MinLength(1)]
-        //public string LastName { get; set; }
+        [MaxLength(50), MinLength(1)]
+        public string LastName { get; set; }
         //[Required]
         //[MaxLength(50), MinLength(2)]
         //public string StreetAddress { get; set; }

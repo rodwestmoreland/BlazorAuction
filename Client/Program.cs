@@ -21,10 +21,14 @@ namespace BlazorAuction.Client
 
             builder.Services.AddHttpClient<IVehicleService, VehicleService>(client =>
                             client.BaseAddress = new Uri("https://localhost/44335/"));
+            
+            builder.Services.AddHttpClient<IBidService, BidService>(client =>
+                            client.BaseAddress = new Uri("https://localhost/44335/"));
 
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("BlazorAuction.ServerAPI"));
             builder.Services.AddScoped<IVehicleService, VehicleService>();
+            builder.Services.AddScoped<IBidService, BidService>();
 
             builder.Services.AddApiAuthorization();
 

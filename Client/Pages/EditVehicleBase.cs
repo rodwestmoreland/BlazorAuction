@@ -24,6 +24,7 @@ namespace BlazorAuction.Client.Pages
         protected async Task HandleValidSubmit()
         {
             await VehicleService.UpdateVehicle(Vehicle);
+            Console.WriteLine("Test start "+Vehicle.BidStartDate + " end "+ Vehicle.BidEndDate);
             NavigationManager.NavigateTo("/");
         }
     }

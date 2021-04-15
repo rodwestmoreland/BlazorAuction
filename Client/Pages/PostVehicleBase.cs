@@ -13,8 +13,6 @@ namespace BlazorAuction.Client.Pages
 {
     public class PostVehicleBase: ComponentBase
     {
-        
-
         [Inject]
         public IVehicleService VehicleService { get; set; }
         [Inject]

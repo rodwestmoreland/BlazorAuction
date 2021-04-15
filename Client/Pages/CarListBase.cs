@@ -11,24 +11,24 @@ namespace BlazorAuction.Client.Pages
     public class CarListBase : ComponentBase
     {
         [Inject]
-        public IVehicleService  VehicleService { get; set; }
+        public IVehicleService VehicleService { get; set; }
         [Inject]
-        public IBidService      BidService { get; set; }
+        public IBidService BidService { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
-        
-        public Vehicle  Vehicle { get; set; } = new Vehicle();
-        public Bid      Bid     { get; set; } = new Bid();
+        [Parameter]
+        public string Id { get; set; }
 
-        public IEnumerable<Vehicle> Vehicles    { get; set; } = new List<Vehicle>();
-        public IEnumerable<Bid>     Bids        { get; set; } = new List<Bid>();
+        public Vehicle Vehicle { get; set; } = new Vehicle();
+        public Bid Bid { get; set; } = new Bid();
 
-        //public Bid bid = new Bid();
+        public IEnumerable<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+        public IEnumerable<Bid> Bids { get; set; } = new List<Bid>();
 
+        public string PageSubHeader { get; set; } = "Admin - Edit/Delete";
 
         protected override async Task OnInitializedAsync()
         {
-            //var carANDbid = Vehicles.Zip(Bids, (X, Y) => new { X, Y });
             try
             {
                 Bids = (await BidService.GetBids()).ToList();
@@ -43,18 +43,15 @@ namespace BlazorAuction.Client.Pages
 
         protected async Task HandleValidSubmit()
         {
-            var newBid = new Bid { 
-            VehicleId = 1,
-            HighBid = 5500
-            };
-
-            await BidService.CreateBid(newBid);
-            NavigationManager.NavigateTo("/");
+            
+             PageSubHeader = "Bidding";
+            NavigationManager.NavigateTo("/vehicle/{id}");
         }
     }
 }
 
-//        @*@{ var carANDbid = Vehicles.Zip(Bids, (X, Y) => new { X, Y }); }
+//<EditForm Model="@Vehicle" OnValidSubmit="HandleValidSubmit">
+// @*@{ var carANDbid = Vehicles.Zip(Bids, (X, Y) => new { X, Y }); }
 //*@
 
 //                                @*@(from bidAmount in Bids where (car.VehicleId == bid.VehicleId) select bidAmount.HighBid).Max(); *@

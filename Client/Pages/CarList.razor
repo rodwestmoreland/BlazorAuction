@@ -1,84 +1,90 @@
-﻿@page "/car"
+﻿@page "/"
 @inherits CarListBase
 
 <div class="container">
-    <EditForm Model="@Vehicle" OnValidSubmit="HandleValidSubmit">
+        <div class="shadow p-3 mb-5 bg-white rounded"><h5>Admin Page</h5></div>
 
-        @{}
-        @*@foreach (var v in Vehicles)
-        {
-            var bidList = new List<decimal>();
-            foreach (var b in Bids)
-            {
-                if (v.VehicleId == b.VehicleId) bidList.Add(b.HighBid);
-            }
-            if(bidList.Count>0) Console.WriteLine(bidList.Max());
-        }*@
+    @foreach (var car in Vehicles)
+    {
+        var bidList = new List<decimal>();
+        foreach (var b in Bids) { if (car.VehicleId == b.VehicleId) bidList.Add(b.HighBid); }
 
+        <hr />
+        <div class="row">
 
-        @foreach (var car in Vehicles)
-        {
-            var bidList = new List<decimal>();
-            foreach (var b in Bids) { if (car.VehicleId == b.VehicleId) bidList.Add(b.HighBid); }
-            <hr />
-            <div class="row">
+            <div class="col-lg-3 col-md-12">
+                <a href="/vehicle/@car.VehicleId">
+                    <img src="@car.VehicleImagePath" style="max-width: 100%;" />
+                </a><br />
+                <a class="btn btn-outline-secondary" href="/vehicle/@car.VehicleId" role="button">More Details</a>
+            </div>
 
-                <div class="col col-md-3">
-                    <a href="/vehicle/@car.VehicleId">
-                        <img src="@car.VehicleImagePath" class="img-fluid" style="max-width: 200px;" />
-                    </a><br />
-                    <a class="btn btn-outline-secondary" href="/vehicle/@car.VehicleId" role="button">More Details</a>
+            <div class="col-lg-5 col-md-6">
+
+                <div class="row">
+                    <div class="col mini-box colorred">Year: @car.Year   </div>
                 </div>
+                <div class="row">
+                    <div class="col mini-box">Make: @car.Make   </div>
+                </div>
+                <div class="row">
+                    <div class="col mini-box">Model: @car.Model  </div>
+                </div>
+                <div class="row">
+                    <div class="col mini-box">Model: @car.Mileage  </div>
+                </div>
+                <div class="row">
+                    <div class="col mini-box">Title: @car.TitleType  </div>
+                </div>
+            </div>
 
-                <div class="col col-md-5">
 
-                    <div class="row">
-                        <div class="col mini-box colorred">Year: @car.Year   </div>
-                    </div>
-                    <div class="row">
-                        <div class="col mini-box">Make: @car.Make   </div>
-                    </div>
-                    <div class="row">
-                        <div class="col mini-box">Model: @car.Model  </div>
-                    </div>
-                    <div class="row">
-                        <div class="col mini-box">Model: @car.Mileage  </div>
-                    </div>
-                    <div class="row">
-                        <div class="col mini-box">Title: @car.TitleType  </div>
+            <div class="col-lg-4 col-md-6">
+
+                <div class="row">
+                    <div class="col mini-box"><p>Starting Price: @car.StartAmount </p></div>
+                </div>
+                <div class="row">
+                    <div class="col mini-box">
+                        <p>
+                            @{
+                                var path = car.VehicleId;
+                                var maxBid = 0.0m;
+                            }
+                            @(bidList.Count == 0 ? "No bids yet " : "Current Bid: ")
+                            <strong>
+                                @{ if (bidList.Count > 0)
+                                    {
+                                        @bidList.Max();
+                                        maxBid = bidList.Max();
+                                    }
+                                }
+                            </strong>
+
+                        </p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col mini-box"><p>Ends: @(car.BidEndDate != null ? car.BidEndDate.Value.ToString("G") : car.BidEndDate )</p></div>
+                </div>
+                <div class="row">
+                    <div class="col mini-box">
 
+                        <button class="btn btn-success " @onclick="(e => GoBid(path,maxBid))" role="button">
 
-                <div class="col col-md-4">
-
-                    <div class="row">
-                        <div class="col mini-box"><p>Starting Price: @car.StartAmount </p></div>
+                            Bid Now
+                        </button><br /><br />
                     </div>
-                    <div class="row">
-                        <div class="col mini-box">
-                            <p>
-                                 @(bidList.Count == 0 ? "No bids yet" : "Current Bid: $")
-                                <strong>@if (bidList.Count > 0)@bidList.Max()</strong>
-                                
-                            </p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col mini-box"><p>Ends: 4/03 9:00pm </p></div>
-                            </div>
-                            <div class="row">
-                                <div class="col mini-box">
-                                    <button class="btn btn-success">
-
-                                        Bid Now
-                                    </button><br /><br />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-                }
-            </EditForm>
-
+                </div>
+            </div>
         </div>
+        <hr />
+    }
+</div>
+@{  
+    void GoBid(int path, decimal maxBid)
+    {
+        PageSubHeader = "Bidding";
+        NavigationManager.NavigateTo($"/vehicle/"+ path +"/"+ PageSubHeader + "/" + maxBid);
+    }
+ } 

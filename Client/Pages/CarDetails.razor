@@ -1,64 +1,101 @@
 ﻿@page "/vehicle/{id}"
+@page "/vehicle/{id}/{pagesubheader}"
+@page "/vehicle/{id}/{pagesubheader}/{maxbid}"
+
+@inherits CarDetailsBase
+
 <h3>Details: @Vehicle.Year @Vehicle.Make @Vehicle.Model</h3>
-
-
+<h4>@pagesubheader</h4>
 <hr />
-
 <div class="container">
     <div class="row">
 
-        <div class="col col-md-4">
-            <img src="@Vehicle.VehicleImagePath" class="img-fluid" style="max-width: 200px;" />
+        <div class="col col-lg-6">
+            <img src="@Vehicle.VehicleImagePath"  style="max-width: 100%;" />
         </div>
 
-        <div class="col col-md-8">
+        <div class="col col-lg-6">
 
             <div class="row">
-                <div class="col mini-box colorred">Year: @Vehicle.Year   </div>
+                <div class="col mini-box ">             Year: @Vehicle.Year   </div>
             </div>
             <div class="row">
-                <div class="col mini-box">Make: @Vehicle.Make   </div>
+                <div class="col mini-box">              Make: @Vehicle.Make   </div>
             </div>
             <div class="row">
-                <div class="col mini-box">Model: @Vehicle.Model  </div>
+                <div class="col mini-box">              Model: @Vehicle.Model  </div>
             </div>
             <div class="row">
-        
-                <div class="d-grid gap-2 d-md-block">
-                    <a href="/editvehicle/@Vehicle.VehicleId" class="btn btn-primary ">Edit</a>
-                    <button type="submit" class="btn btn-danger  ml-1">Delete</button>
-                </div>
+                <div class="col mini-box">              Mileage: @Vehicle.Mileage  </div>
             </div>
-        
+            <div class="row">
+                <div class="col mini-box">              Condition: @Vehicle.Condition  </div>
+            </div>
+            <div class="row">
+                <div class="col mini-box">              Title Type: @Vehicle.TitleType  </div>
+            </div>
+            <div class="row">
+                <div class="col mini-box">              Fuel Type: @Vehicle.FuelType  </div>
+            </div>
+            <div class="row">
+                <div class="col mini-box">              Drive Train: @Vehicle.DriveTrain  </div>
+            </div>
+
         </div>
-
 
     </div>
-    <hr />
-    <EditForm Model="@Vehicle" OnValidSubmit="HandleValidSubmit">
 
-
-        
-
-    </EditForm>
 </div>
 
-@code {
-    
-    [Inject]
-    public IVehicleService VehicleService { get; set; }
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
-    [Parameter]
-    public string Id { get; set; }
+<hr />
+@{
+    Console.WriteLine("header " + pagesubheader);
+}
+@{ if (pagesubheader == "Bidding")
 
-    public Vehicle Vehicle { get; set; } = new Vehicle();
-
-    protected async override Task OnInitializedAsync() => Vehicle = await VehicleService.GetVehicle(int.Parse(Id));
-
-    protected async Task HandleValidSubmit()
     {
-        await VehicleService.DeleteVehicle(Vehicle.VehicleId);
+        <div class="row">
+            <div class="d-grid">
+                Current Bid: <b> @maxbid </b>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                @{ Bid.VehicleId = Vehicle.VehicleId; }
+                <EditForm Model="@Bid" OnValidSubmit="BidSubmit">
+                    <ValidationSummary></ValidationSummary>
+                    <input type="hidden" id="vId" name="vId" @bind="@Bid.VehicleId" />
+
+                    <label for="BidAmount" class="col-sm-10 col-form-label">            Make a bid </label>
+                    <div class="col-md-12">
+
+                        <InputNumber id="BidAmount" class="form-control"
+                                     @bind-Value="@Bid.HighBid" />
+                        <button type="submit" class="btn btn-primary mt-2">             Bid Now</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <EditForm Model="@Vehicle" OnValidSubmit="HandleValidSubmit">
+            <ValidationSummary></ValidationSummary>
+            <div class="row">
+                <div class="d-grid gap-2 d-md-block">
+                    <a href="/editvehicle/@Vehicle.VehicleId" class="btn btn-primary "> Edit</a>
+                    <button type="submit" class="btn btn-danger  ml-1">                 Delete</button>
+                </div>
+            </div>
+        </EditForm>
+    }}
+
+@{
+    async Task BidSubmit()
+    {
+        await BidService.CreateBid(Bid);
         NavigationManager.NavigateTo("/");
     }
+
 }

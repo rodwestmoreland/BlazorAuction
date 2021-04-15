@@ -38,13 +38,24 @@ namespace BlazorAuction.Server.Models
             var result = await _context.Vehicles.FirstOrDefaultAsync(x=>x.VehicleId == vehicle.VehicleId);
             if (result != null)
             {
-                result.Year =           vehicle.Year;
-                result.Make =           vehicle.Make;
-                result.Model =          vehicle.Model;
-                result.Mileage =        vehicle.Mileage;
-                result.VehicleImagePath = vehicle.VehicleImagePath;
+                result.Year =               vehicle.Year;
+                result.Make =               vehicle.Make;
+                result.Model =              vehicle.Model;
+                result.Mileage =            vehicle.Mileage;
+                result.VehicleImagePath =   vehicle.VehicleImagePath;
+                result.StartAmount =        vehicle.StartAmount;
+                result.BidStartDate =       vehicle.BidStartDate;
+                result.BidEndDate =         vehicle.BidEndDate;
+                result.Color =              vehicle.Color;
+                result.Condition =          vehicle.Condition;
+                result.Cylinders =          vehicle.Cylinders;
+                result.Damage =             vehicle.Damage;
+                result.DriveTrain =         vehicle.DriveTrain;
+                result.FuelType =           vehicle.FuelType;
+                result.TitleType =          vehicle.TitleType;
 
                 await _context.SaveChangesAsync();
+                
                 return result;
             }
             return null;
